@@ -36,8 +36,7 @@ int open_dylib(char *dylib_name, int dylib_num) {
     return 0;
 }
 
-void load_all_dylibs(int procnum) {
-    int ndylib = 1000;
+void load_all_dylibs(int ndylib, int procnum) {
     char *directory = "./dylibs";
     int retval = 0;
     char dylibname[MAXLEN];
@@ -55,25 +54,44 @@ void load_all_dylibs(int procnum) {
 
 int main(int argc, char* argv[]) {
     int n;
+    int ndylibs;
     int nprocess = 20;
     int i;
     char cmd[MAXLEN];
     FILE *popen_files[100];
     int retval;
 
-    if (argc == 2) {
-        // Load the dylibs and exit
-        n = strtol(argv[1], NULL, 0);
+    if (argc < 2) {
+        fprintf(stderr, "Specify number of dylibs (<= 1000)\n");
+        return -1;
+    }
 
-        load_all_dylibs(n);
+    if (argc == 3) {
+        // Load the dylibs and exit
+        ndylibs = strtol(argv[1], NULL, 0);
+        n = strtol(argv[2], NULL, 0);
+
+        if (ndylibs > 1000) {
+            fprintf(stderr, "Must be <= 1000.\n");
+            return -1;
+        }
+
+        load_all_dylibs(ndylibs, n);
 
         return 0;
+    } else if (argc == 2) {
+        ndylibs = strtol(argv[1], NULL, 0);
+
+        if (ndylibs > 1000) {
+            fprintf(stderr, "Must be <= 1000.\n");
+            return -1;
+        }
     }
 
     // If no argument, spawn a bunch of processes with popen.
 
     for (i=0; i<nprocess; i++) {
-        snprintf(cmd, MAXLEN, "./ventura_dlopener_popen %d", i);
+        snprintf(cmd, MAXLEN, "./ventura_dlopener_popen %d %d", ndylibs, i);
         fprintf(stdout, "Running `%s`\n", cmd);
         popen_files[i] = popen(cmd, "r");
     }
