@@ -2,8 +2,8 @@
 
 Making ventura crash some more.
 
-Go into dylibs and run `compile_dylibs.sh`.
-You can also make more with `generate_dylib_files.py`.
+Go into dylibs and run `bash compile_dylibs.sh`.
+(You can also make more with `python3 generate_dylib_files.py`.)
 
 Then in the parent directory run `bash build_opener.sh`.
 
