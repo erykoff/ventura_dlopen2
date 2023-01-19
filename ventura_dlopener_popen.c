@@ -47,14 +47,14 @@ void load_all_dylibs(int ndylib, int procnum) {
     char dylibname[MAXSTRLEN];
     int i;
 
-    fprintf(stderr, "Loading dylibs (%d)\n", procnum);
+    fprintf(stderr, "Loading %d dylibs (%d)\n", ndylib, procnum);
 
     for (i=0; i<ndylib; i++) {
         snprintf(dylibname, MAXSTRLEN, "%s/source%d.dylib", directory, i);
         open_dylib(dylibname, i);
     }
 
-    fprintf(stderr, "Done loading dylibs (%d)\n", procnum);
+    fprintf(stderr, "Done loading %d dylibs (%d)\n", ndylib, procnum);
 }
 
 int main(int argc, char* argv[]) {
