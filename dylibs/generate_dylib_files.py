@@ -3,7 +3,7 @@
 import os
 
 
-nfiles = 1000
+nfiles = 2000
 
 for i in range(nfiles):
     fname = f"source{i}.c"
